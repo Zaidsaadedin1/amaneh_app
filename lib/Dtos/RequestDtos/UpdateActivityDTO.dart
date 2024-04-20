@@ -1,4 +1,5 @@
-class CreateActivityDTO {
+class UpdateActivityDTO {
+  String id;
   String description;
   String currentLocation;
   String destination;
@@ -10,7 +11,8 @@ class CreateActivityDTO {
   String recommendedItemsToShip;
   double basePrice;
 
-  CreateActivityDTO({
+  UpdateActivityDTO({
+    required this.id,
     required this.description,
     required this.currentLocation,
     required this.destination,
@@ -25,6 +27,7 @@ class CreateActivityDTO {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'description': description,
       'currentLocation': currentLocation,
       'destination': destination,

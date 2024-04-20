@@ -1,11 +1,6 @@
-class GetAllRequestsDTO {
-  String userId;
-
-  GetAllRequestsDTO({required this.userId});
-
+class GetAllActivitiesDTO {
+  // No fields required if fetching all activities without filters
   Map<String, dynamic> toJson() {
-    return {
-      'userId': userId,
-    };
+    return {};
   }
 }

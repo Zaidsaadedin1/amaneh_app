@@ -1,7 +1,7 @@
-class GetActivityDTO {
+class GetPaymentDTO {
   String id;
 
-  GetActivityDTO({required this.id});
+  GetPaymentDTO({required this.id});
 
   Map<String, dynamic> toJson() {
     return {

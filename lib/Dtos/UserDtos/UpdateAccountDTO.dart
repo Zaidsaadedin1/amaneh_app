@@ -20,8 +20,9 @@ class UpdateAccountDTO {
     if (email != null) data['email'] = email;
     if (firstName != null) data['firstName'] = firstName;
     if (lastName != null) data['lastName'] = lastName;
-    if (dateOfBirth != null)
+    if (dateOfBirth != null) {
       data['dateOfBirth'] = dateOfBirth!.toIso8601String();
+    }
     if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
     return data;
   }

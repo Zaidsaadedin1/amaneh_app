@@ -10,22 +10,4 @@ class Notification {
     required this.body,
     required this.date,
   });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'body': body,
-      'date': date.toIso8601String(),
-    };
-  }
-
-  static Notification fromJson(Map<String, dynamic> json) {
-    return Notification(
-      id: json['id'],
-      title: json['title'],
-      body: json['body'],
-      date: DateTime.parse(json['date']),
-    );
-  }
 }
