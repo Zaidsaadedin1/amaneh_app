@@ -1,3 +1,5 @@
+import 'package:amaneh_app/Dtos/ActivityDtos/GetAllActivitiesDTO.dart';
+import 'package:amaneh_app/Dtos/ActivityDtos/GetOneActivityDTO.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -88,5 +90,36 @@ class UserService {
     } catch (e) {
       throw Exception('Failed to retrieve notifications: $e');
     }
+  }
+
+  Future<DocumentSnapshot> getActivity(GetActivityDTO dto) async {
+    try {
+      // Fetching the activity from Firestore
+      DocumentSnapshot activitySnapshot = await _firestore
+          .collection('users')
+          .doc(dto.userId)
+          .collection('activities')
+          .doc(dto.activityId)
+          .get();
+
+      if (!activitySnapshot.exists) {
+        throw Exception('Activity not found');
+      }
+      return activitySnapshot;
+    } catch (e) {
+      print('Error fetching activity: $e');
+      rethrow;
+    }
+  }
+
+  // Service to get all activities for a user
+  Future<List<QueryDocumentSnapshot>> getAllActivities(
+      GetAllActivitiesDTO dto) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('users')
+        .doc(dto.userId)
+        .collection('activities')
+        .get();
+    return querySnapshot.docs;
   }
 }

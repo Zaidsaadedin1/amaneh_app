@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1024704097778",
-    "project_id": "amaneh-8c83f",
-    "storage_bucket": "amaneh-8c83f.appspot.com"
+    "project_number": "908772226306",
+    "project_id": "amanehapp",
+    "storage_bucket": "amanehapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1024704097778:android:ed164c982417b7a46b8f6b",
+        "mobilesdk_app_id": "1:908772226306:android:18867bee69961a91abbe1b",
         "android_client_info": {
           "package_name": "com.example.amaneh_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAUj64izVBarm6u7Ys765Ve1fLzmRJL1EU"
+          "current_key": "AIzaSyB06hCAl0UFW5TD9926yjcve_LmxIfE6-o"
         }
       ],
       "services": {
