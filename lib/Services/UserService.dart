@@ -1,5 +1,7 @@
 import 'package:amaneh_app/Dtos/ActivityDtos/GetAllActivitiesDTO.dart';
 import 'package:amaneh_app/Dtos/ActivityDtos/GetOneActivityDTO.dart';
+import 'package:amaneh_app/Dtos/UserDtos/LoginDTO.dart';
+import 'package:amaneh_app/Dtos/UserDtos/RegisterDTO.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -7,23 +9,52 @@ class UserService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Register a new user
-  Future<UserCredential> register(String email, String password) async {
+  // Register a new user using RegisterDTO
+  Future<UserCredential> register(RegisterDTO dto) async {
     try {
-      return await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+              email: dto.email, password: dto.password);
+
+      // Additional user details are added to Firestore
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'firstName': dto.firstName,
+        'lastName': dto.lastName,
+        'email': dto.email,
+        'country': dto.country,
+        'dateOfBirth': dto.dateOfBirth.toIso8601String(),
+        'phoneNumber': dto.phoneNumber,
+        'idImage': dto.idImage,
+        'personalImage': dto.personalImage
+      });
+
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        throw Exception(
+            'Email already in use. Please use a different email address.');
+      } else {
+        throw Exception('Failed to register user: ${e.message}');
+      }
     } catch (e) {
       throw Exception('Failed to register user: $e');
     }
   }
 
-  // Login user
-  Future<UserCredential> login(String email, String password) async {
+  // Login user using LoginDTO
+  Future<UserCredential> login(LoginDTO dto) async {
     try {
       return await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+          email: dto.email, password: dto.password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+        throw Exception(
+            'Invalid email or password. Please try again or reset your password.');
+      } else {
+        throw Exception('Login failed: ${e.message}');
+      }
     } catch (e) {
-      throw Exception('Failed to login user: $e');
+      throw Exception('Login failed: $e');
     }
   }
 

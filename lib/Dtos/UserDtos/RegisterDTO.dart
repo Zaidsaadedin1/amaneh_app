@@ -5,7 +5,6 @@ class RegisterDTO {
   String phoneNumber;
   String email;
   String password;
-  String confirmPassword;
   String country;
   String idImage;
   String personalImage;
@@ -15,7 +14,6 @@ class RegisterDTO {
     required this.lastName,
     required this.email,
     required this.password,
-    required this.confirmPassword,
     required this.country,
     required this.dateOfBirth,
     required this.phoneNumber,
@@ -29,7 +27,6 @@ class RegisterDTO {
       'lastName': lastName,
       'email': email,
       'password': password,
-      'confirmPassword': confirmPassword,
       'country': country,
       'dateOfBirth': dateOfBirth.toIso8601String(),
       'phoneNumber': phoneNumber,

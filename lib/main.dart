@@ -1,4 +1,4 @@
-import 'package:amaneh_app/Widgets/HomeWidget/HomeWidget.dart';
+import 'package:amaneh_app/Widgets/HomeWidget/HomePage.dart';
 import 'package:amaneh_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

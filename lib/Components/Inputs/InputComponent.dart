@@ -5,12 +5,14 @@ class InputComponent extends StatelessWidget {
   final double width;
   final double height;
   final bool isPassword;
+  final TextEditingController controller; // Added controller
 
   const InputComponent({
     Key? key,
     required this.placeholder,
+    required this.controller, // Make controller a required parameter
     this.width = double.infinity,
-    this.height = 56.0, // default height for text fields
+    this.height = 56.0, // Default height for text fields
     this.isPassword = false,
   }) : super(key: key);
 
@@ -20,6 +22,7 @@ class InputComponent extends StatelessWidget {
       width: width,
       height: height,
       child: TextFormField(
+        controller: controller, // Use the passed controller
         obscureText: isPassword,
         decoration: InputDecoration(
           labelText: placeholder,

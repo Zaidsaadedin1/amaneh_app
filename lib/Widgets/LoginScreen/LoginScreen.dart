@@ -1,21 +1,32 @@
-import 'package:amaneh_app/Components/Buttons/ButtonComponent.dart';
-import 'package:amaneh_app/Components/Inputs/InputComponent.dart';
 import 'package:amaneh_app/Widgets/RigesterScreen/RigesterScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:amaneh_app/Dtos/UserDtos/LoginDTO.dart';
+import 'package:amaneh_app/Services/UserService.dart';
+import 'package:amaneh_app/Components/Buttons/ButtonComponent.dart';
+import 'package:amaneh_app/Components/Inputs/InputComponent.dart';
+import 'package:amaneh_app/Widgets/HomeWidget/HomePage.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(), // Assumes Navigator is being used
-      ), // Spacing after the title, adjust as needed
+        leading: const BackButton(),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 80), // Adjust the height as per your design
+            const SizedBox(height: 80),
             const Center(
               child: Text(
                 'Login',
@@ -27,15 +38,15 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            const InputComponent(
-              placeholder: 'Username',
-              // width: 300, // You can specify the width if you want
+            InputComponent(
+              placeholder: 'Email',
+              controller: _usernameController,
             ),
             const SizedBox(height: 16),
-            const InputComponent(
+            InputComponent(
               placeholder: 'Password',
               isPassword: true,
-              width: 300, // You can specify the width if you want
+              controller: _passwordController,
             ),
             TextButton(
               onPressed: () {
@@ -49,18 +60,16 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 32),
             ButtonComponent(
               text: 'Log In',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen()),
-                );
-              },
+              onPressed: _attemptLogin,
             ),
             const SizedBox(height: 24),
             Center(
               child: TextButton(
                 onPressed: () {
-                  // TODO: Navigate to sign up screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  );
                 },
                 child: const Text(
                   "Don’t have an account? Sign Up",
@@ -72,5 +81,33 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _attemptLogin() {
+    LoginDTO loginDTO = LoginDTO(
+        email: _usernameController.text, password: _passwordController.text);
+
+    UserService().login(loginDTO).then((userCredential) {
+      // Navigate to the Home Page upon successful login
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => HomeScreen()));
+    }).catchError((error) {
+      // Handle errors or show an error message
+      print('Login failed: $error');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Login Error"),
+          content: const Text(
+              "Failed to login. Please check your credentials and try again."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Close"),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

@@ -1,8 +1,32 @@
+import 'package:flutter/material.dart';
 import 'package:amaneh_app/Components/Buttons/ButtonComponent.dart';
 import 'package:amaneh_app/Components/Inputs/InputComponent.dart';
-import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
+
+  void _registerUser() {
+    if (_passwordController.text == _confirmPasswordController.text) {
+      // Assuming you have a function to handle registration
+      // UserService().register(YourDTO(parameters...))
+      print("Registration successful");
+    } else {
+      print("Passwords do not match");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,8 +38,8 @@ class RegisterScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-          const  SizedBox(height: 80), // Adjust the height as per your design
-           const Center(
+            const SizedBox(height: 80),
+            const Center(
               child: Text(
                 'Sign Up',
                 style: TextStyle(
@@ -25,66 +49,60 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
             ),
-          const  SizedBox(height: 40), // Spacing after the title, adjust as needed
-            // Using the custom InputField for text input
-           const Row(
+            const SizedBox(height: 40),
+            Row(
               children: [
                 Expanded(
                   child: InputComponent(
                     placeholder: 'First Name',
-                    // width: 160, // Optional, if you want to specify the width
+                    controller: _firstNameController,
                   ),
                 ),
-                SizedBox(width: 16), // Spacing between the first name and last name fields
+                SizedBox(width: 16),
                 Expanded(
                   child: InputComponent(
                     placeholder: 'Last Name',
-                    // width: 160, // Optional, if you want to specify the width
+                    controller: _lastNameController,
                   ),
                 ),
               ],
             ),
-          const  SizedBox(height: 16),
-           const InputComponent(
+            const SizedBox(height: 16),
+            InputComponent(
               placeholder: 'Date of birth',
-              // width: 330, // Optional, if you want to specify the width
+              controller: _dobController,
             ),
-           const SizedBox(height: 16),
-           const InputComponent(
+            const SizedBox(height: 16),
+            InputComponent(
               placeholder: 'Phone Number',
-              // width: 330, // Optional, if you want to specify the width
+              controller: _phoneNumberController,
             ),
-          const  SizedBox(height: 16),
-          const  InputComponent(
+            const SizedBox(height: 16),
+            InputComponent(
               placeholder: 'Email',
-              // width: 330, // Optional, if you want to specify the width
+              controller: _emailController,
             ),
-           const SizedBox(height: 16),
-           const InputComponent(
+            const SizedBox(height: 16),
+            InputComponent(
               placeholder: 'Password',
               isPassword: true,
-              // width: 330, // Optional, if you want to specify the width
+              controller: _passwordController,
             ),
-           const SizedBox(height: 16),
-           const InputComponent(
+            const SizedBox(height: 16),
+            InputComponent(
               placeholder: 'Confirm Password',
               isPassword: true,
-              // width: 330, // Optional, if you want to specify the width
+              controller: _confirmPasswordController,
             ),
-           const SizedBox(height: 16),
-           const InputComponent(
+            const SizedBox(height: 16),
+            InputComponent(
               placeholder: 'Country',
-              // width: 330, // Optional, if you want to specify the width
+              controller: _countryController,
             ),
-            // ... Insert dropdown or other widget for country selection
-           const SizedBox(height: 32),
-            // Using the custom RoundedButton for the sign-up button
+            const SizedBox(height: 32),
             ButtonComponent(
               text: 'Sign up',
-              onPressed: () {
-                // TODO: Implement registration logic
-              },
-              // width: double.infinity, // The button will expand to fill the width
+              onPressed: _registerUser,
             ),
           ],
         ),
