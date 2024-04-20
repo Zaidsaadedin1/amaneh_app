@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:amaneh_app/Components/Buttons/ButtonComponent.dart';
 import 'package:amaneh_app/Components/Inputs/InputComponent.dart';
+import 'package:amaneh_app/Services/UserService.dart';
+import 'package:amaneh_app/Dtos/UserDtos/RegisterDTO.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -17,15 +19,70 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
 
-  void _registerUser() {
-    if (_passwordController.text == _confirmPasswordController.text) {
-      // Assuming you have a function to handle registration
-      // UserService().register(YourDTO(parameters...))
-      print("Registration successful");
-    } else {
-      print("Passwords do not match");
-    }
+ void _registerUser() {
+  if (_passwordController.text == _confirmPasswordController.text) {
+    // Convert inputs into a DateTime object for the date of birth
+    DateTime dob = DateTime.tryParse(_dobController.text) ?? DateTime.now();
+
+    // Create a DTO instance
+    RegisterDTO dto = RegisterDTO(
+      firstName: _firstNameController.text,
+      lastName: _lastNameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+      confirmPassword: _confirmPasswordController.text,
+      country: _countryController.text,
+      dateOfBirth: dob,
+      phoneNumber: _phoneNumberController.text,
+      idImage: 'path/to/idImage', // Placeholder paths
+      personalImage: 'path/to/personalImage', // Placeholder paths
+    );
+
+    // Use the UserService to register the user
+    UserService userService = UserService();
+    userService.register(dto).then((userCredential) {
+      // Handle successful registration, such as navigating to a new screen
+      Navigator.pushReplacementNamed(context, '/HomeScreen');  // Adjust as per your route setup
+    }).catchError((error) {
+      // Handle errors in registration, e.g., display an error message
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Registration Failed"),
+            content: Text(error.toString()),
+            actions: <Widget>[
+              TextButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    });
+  } else {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text("Passwords do not match"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
